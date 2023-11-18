@@ -1,0 +1,8 @@
+country
+is_capital
+latitude
+longitude
+name
+population
+
+<input type="button" id="redir" url="/stats/dash" class="sbutton" value="The button">

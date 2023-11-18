@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/static/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <p class="container">City:{{ cn }} Latitude:{{ clat }} Longitude:{{ clon }}</p>
+        <div class="container">
+            <h2>Location Info:</h2>
+            Name: {{ weather.location.name }}<br>
+            Region: {{ weather.location.region }}<br>
+            Country: {{ weather.location.country }}<br>
+            Timezone id: {{ weather.location.tz_id }}<br>
+            Timezone: {{ aqi.timezone }}<br>
+            Localtime epoch: {{ weather.location.localtime_epoch }}<br>
+            Localtime: {{ weather.location.localtime }}<br>
+        </div>
+        <div class="container">
+            <h2>Current weather info</h2>
+            Last updated epoch: {{ weather.current.last_updated_epoch }}<br>
+            Last updated date and time: {{ weather.current.last_updated }}<br>
+            Temperature in Celcius: {{ weather.current.temp_c }}<br>
+            Temperature in Farenheit: {{ weather.current.temp_f }}<br>
+            Day/Night: {{ weather.current.is_day }}<br>
+            <div>
+                <h4>Condition</h4>
+                Current weather condition: {{ weather.current.condition.text }}<br>
+                <img src="{{ weather.current.icon }}">
+            </div>
+            Wind speed in Miles: {{ weather.current.wind_mph }}<br>
+            Wind speed in Kilometers: {{ weather.current.wind_kph }}<br>
+            Wind degree: {{ weather.current.wind_degree }}<br>
+            Wind direction: {{ weather.current.wind_dir }}<br>
+            Pressure in mb: {{ weather.current.pressure_mb }}<br>
+            Pressure in in: {{ weather.current.pressure_in }}<br>
+            Precepitation in mm: {{ weather.current.percip_mm }}<br>
+            Percepitation in in: {{ weather.current.percip_in }}<br>
+            Humidity: {{ weather.current.humidity }}<br>
+            Cloudy: {{ weather.current.cloud }}<br>
+            Feelslike in Celcius: {{ weather.current.feelslike_c }}<br>
+            Feelslike in Farenheit: {{ weather.current.feelslike_f }}<br>
+            Visibility in Kilometers: {{ weather.current.vis_km }}<br>
+            Visibility in Miles: {{ weather.current.vis_miles }}<br>
+            UV: {{ weather.current.uv }}<br>
+            Gust in Miles per hour: {{ weather.current.gust_mph }}<br>
+            Gust in Kilometers per hour: {{ weather.current.gust_kph }}<br>
+        </div>
+        <div class="container">
+            <h2>AQI info:</h2>
+            AQI: {{ aqi.data.aqi }}<br>
+            CO: {{ aqi.data.co }}<br>
+            Mold level: {{ aqi.data.mold_level }}<br>
+            NO2: {{ aqi.data.no2 }}<br>
+            O3: {{ aqi.data.o3 }}<br>
+            PM10: {{ aqi.data.pm10 }}<br>
+            PM25: {{ aqi.data.pm25 }}<br>
+            Pollen level grass: {{ aqi.data.pollen_level_grass }}<br>
+            Pollen level tree: {{ aqi.data.pollen_level_tree }}<br>
+            Pollen level weed: {{ aqi.data.pollen_level_weed }}<br>
+            Predominant pollen type: {{ aqi.data.predominant_pollen_type }}<br>
+            SO2: {{ aqi.data.so2 }}<br>
+        </div>
+    </body>
+</html>

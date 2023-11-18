@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Send data to backend</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/static/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+             $(document).ready(function() {
+                function send_data(city_name) {
+                    console.log(city_name);
+                    $.ajax({
+                        method: 'GET',
+                        dataType: 'json',
+                        url: 'https://api.api-ninjas.com/v1/city?name=' + city_name,
+                        headers: { 'X-Api-Key': 'jrBHlDKqviKKbMOJXyN23w==0DfjRcyeluirjXlg' },
+                        contentType: 'application/json',
+                        success: function(result) {
+                            console.log("api result:", result[0]);
+                            $.ajax({
+                                type: "POST",
+                                url: "/stats/tdata/",
+                                data: {
+                                    "c_name" : result[0].name,
+                                    "lat" : result[0].latitude,
+                                    "lon" : result[0].longitude,
+                                    "country" : result[0].country,
+                                    "iscapital" : result[0].is_capital,
+                                    "population" : result[0].population,
+                                },
+                                success: function(response)
+                                {
+                                    // $("#m").html("<h2>IP sent to backend.</h2>");
+                                    $("#m").append("<h2>Ok Click the button</h2>");
+                                    // $('#redir').attr("href","/stats/dash/"+result[0].name+"/"+result[0].latitude+"/"+result[0].longitude);
+                                    $('#redir').attr("href","/stats/dash?cn="+result[0].name+"?clat="+result[0].latitude+"?clon="+result[0].longitude);
+                                    // $.post('/stats/dash/'+result[0].name+"/"+result[0].latitude+"/"+result[0].longitude);
+                                    // $.post("/stats/dash?cn="+result[0].name+"?clat="+result[0].latitude+"?clon="+result[0].longitude+"/");
+                                }
+                            });
+                            return false;
+                        },
+                        // },
+                        error: function ajaxError(jqXHR) {
+                            console.error('Error: ', jqXHR.responseText);
+                        }
+                    });
+                }
+                    // });
+                // });
+                $("#sbutton").click(function ()
+                {
+                    var c_name = $("#cityname").val();
+                    send_data(c_name);
+                    // $('#redir').attr("href","/stats/dash/"+c_name+"/"+result[0].latitude+"/"+result[0].longitude);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container"><h2>Welcome to Django Weather Application</h2></div>
+        <p id="m" class="container">Message: </p>
+        <div class="container" title="Using cityapi from API ninjas">
+            <input type="text" id="cityname" class="input" placeholder="City">
+            <input type="submit" id="sbutton" value="Submit">
+        </div>
+        <div class="container">
+            <button>
+                <a class="btn btn-primary" id="redir" class="cool" href="/stats/dash">The button</a>
+            </button>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Send data to backend</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/static/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+             $(document).ready(function() {
+                var webip = 0;
+                function send_data() {
+                    $.getJSON("https://api.ipify.org/?format=json", function(e) {
+                        console.log("the ip is:",e.ip);
+                        $("#m").append(e.ip);
+                        webip = e.ip;
+                        $.ajax({
+                            type: "POST",
+                            url: "/stats/sdata/",
+                            data: {
+                                "ip" : e.ip,
+                            },
+                            success: function(response)
+                            {
+                                console.log(response);
+                                alert("IP sent to backend.");
+                                alert(response.key1);
+                            }
+                        });
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/stats/sdata/",
+                        data: {
+                            "ip" : JSON.stringify(webip),
+                        },
+                        success: function(response)
+                        {
+                            $("#m").html("<h2>IP sent to backend.</h2>");
+                        }
+                    });
+                    return false;
+                }
+                send_data()
+            });
+        </script>
+    </head>
+    <body>
+        <p id="m" class="container"></p>
+        <div class="container">
+            {{ key1 }}
+        </div>
+    </body>
+</html>

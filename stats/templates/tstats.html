@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Send data to backend</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/static/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+             $(document).ready(function() {
+                var city_name;
+                var latitude;
+                var longitude;
+                var country = "default";
+                var is_capital = 0;
+                var population = 0;
+                var api_result;
+                var city_details = {};
+                function send_data(city_name) {
+                    // var city_name;
+                    // var latitude;
+                    // var longitude;
+                    // var country = "default";
+                    // var is_capital = 0;
+                    // var population = 0;
+                    // var api_result;
+                    console.log(city_name);
+                    $.ajax({
+                        method: 'GET',
+                        dataType: 'json',
+                        url: 'https://api.api-ninjas.com/v1/city?name=' + city_name,
+                        headers: { 'X-Api-Key': 'jrBHlDKqviKKbMOJXyN23w==0DfjRcyeluirjXlg' },
+                        contentType: 'application/json',
+                        success: function(result) {
+                            console.log(result[0]);
+                            console.log(result[0].name);
+                            city_name = result[0].name;
+                            latitude = result[0].latitude;
+                            longitude = result[0].longitude;
+                            country = result[0].country;
+                            is_capital = result[0].is_capital;
+                            population = result[0].population;
+                            api_result = result[0];
+                            console.log("api result:", api_result.name);
+                            // city_details = {result[0].name,result[0].country,result[0].latitude,result[0].longitude,result[0].is_capital,result[0].population};
+                            city_details = {city_name,country};
+                            console.log(city_details);
+                            console.log(result[0].name,result[0].country,result[0].latitude,result[0].longitude,result[0].is_capital,result[0].population);
+                            return api_result;
+                        },
+                        error: function ajaxError(jqXHR) {
+                            console.error('Error: ', jqXHR.responseText);
+                        }
+                    });
+
+                    // $.getJSON("https://api.api-ninjas.com/v1/city?name="+city_name, function(res) {
+                    //     console.log("the ip is:",res[0]);
+                    //     $("#m").append(res.json);
+                    //     city_name = res[0];
+                    //     $.ajax({
+                    //         type: "POST",
+                    //         url: "/stats/tdata/",
+                    //         data: {
+                    //             "ip" : res.text,
+                    //         },
+                    //         success: function(response)
+                    //         {
+                    //             console.log(response);
+                    //             alert("IP sent to backend.");
+                    //             alert(response.key1);
+                    //         }
+                    //     });
+                    // });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/stats/tdata/",
+                        data: {
+                            // "cityname" : JSON.stringify(city_name),
+                            // "c_name" : city_name,
+                            "c_name" : api_result.name,
+                            // "lat" : JSON.stringify(latitude),
+                            // "lon" : JSON.stringify(longitude),
+                            "lat" : latitude,
+                            "lon" : longitude,
+                            "country" : country,
+                            "iscapital" : is_capital,
+                            "population" : population,
+                            "result" : JSON.stringify(api_result)
+                        },
+                        success: function(response)
+                        {
+                            $("#m").html("<h2>IP sent to backend.</h2>");
+                        }
+                    });
+                    return false;
+                }
+                $("#sbutton").click(function ()
+                {
+                    var c_name = $("#cityname").val();
+                    send_data(c_name);
+                });
+                // send_data()
+            });
+        </script>
+    </head>
+    <body>
+        <p id="m" class="container"></p>
+        <div class="container">
+            {{ key1 }}
+        </div>
+        <div class="container" title="Using cityapi from API ninjas">
+            <input type="text" id="cityname" class="input" placeholder="City">
+            <input type="submit" id="sbutton" value="Submit">
+        </div>
+    </body>
+</html>
